@@ -11,6 +11,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.restservice.example.springbootrestexample.user.UserNotFoundException;
+import com.restservice.example.springbootrestexample.user.post.PostNotFoundException;
 
 @RestController
 @ControllerAdvice
@@ -26,6 +27,14 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 	
 	@ExceptionHandler(UserNotFoundException.class)
 	public final ResponseEntity<Object> handleUserNotFoundException(UserNotFoundException ex, WebRequest request) throws Exception {
+		
+		ExceptionResponse exceptionResponse= new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+		
+		return new ResponseEntity(exceptionResponse,HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(PostNotFoundException.class)
+	public final ResponseEntity<Object> handleUserNotFoundException(PostNotFoundException ex, WebRequest request) throws Exception {
 		
 		ExceptionResponse exceptionResponse= new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
 		
