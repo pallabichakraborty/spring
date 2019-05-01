@@ -2,6 +2,7 @@ package com.restservice.example.springbootrestexample.user;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -46,6 +47,23 @@ public class UserDaoService {
 		
 		return null;
 		
+	}
+	
+	public User deleteById(int id)
+	{
+		Iterator<User> usersData=users.iterator();
+		
+		while(usersData.hasNext())
+		{
+			User user=usersData.next();
+			if(user.getId()==id)
+			{
+				usersData.remove();
+				return user;
+			}
+		}
+		
+		return null;
 	}
 
 }
