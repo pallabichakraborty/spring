@@ -2,10 +2,26 @@ package com.restservice.example.springbootrestexample.user.post;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.restservice.example.springbootrestexample.user.User;
+
+@Entity
 public class Post {
 	
+	@Id
+	@GeneratedValue
 	Integer id;
-	Integer userId;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JsonIgnore
+	User user;
+	
 	String postDetails;
 	Date postDateTime;
 	
@@ -13,10 +29,10 @@ public class Post {
 		super();
 	}
 
-	public Post(Integer id, Integer userId, String postDetails, Date postDateTime) {
+	public Post(Integer id, User user, String postDetails, Date postDateTime) {
 		super();
 		this.id = id;
-		this.userId = userId;
+		this.user = user;
 		this.postDetails = postDetails;
 		this.postDateTime = postDateTime;
 	}
@@ -29,12 +45,10 @@ public class Post {
 		this.id = id;
 	}
 
-	public Integer getUserId() {
-		return userId;
-	}
+	
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
+	public void setUserId(User user) {
+		this.user = user;
 	}
 
 	public String getPostDetails() {
@@ -51,6 +65,11 @@ public class Post {
 
 	public void setPostDateTime(Date postDateTime) {
 		this.postDateTime = postDateTime;
+	}
+
+	@Override
+	public String toString() {
+		return "Post [id=" + id + ", postDetails=" + postDetails + ", postDateTime=" + postDateTime + "]";
 	}
 	
 	

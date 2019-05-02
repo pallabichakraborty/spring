@@ -12,18 +12,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.restservice.example.springbootrestexample.user.User;
+
 
 
 @RestController
 public class PostService {
+	/*
 	@Autowired
 	private PostDaoService service=new PostDaoService();
 	
 	//Retrieve all posts for a user - GET /users/{id}/posts
 	@GetMapping("/users/{userId}/posts")
-	public List<Post> retrieveAllPostsForUser(@PathVariable Integer userId)
+	public List<Post> retrieveAllPostsForUser(@PathVariable User user)
 	{
-		return service.retrieveAllPostsForUser(userId);
+		return service.retrieveAllPostsForUser(user);
 	}
 	
 	//Create a post for a user - POST /users/{userId}/posts
@@ -49,5 +52,5 @@ public class PostService {
 			}
 			return post;
 		}
-
+*/
 }

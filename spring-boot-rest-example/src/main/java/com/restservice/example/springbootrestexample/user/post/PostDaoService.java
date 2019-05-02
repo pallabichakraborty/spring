@@ -12,7 +12,7 @@ public class PostDaoService {
 	private Integer postCount=4;
 	
 	private static List<Post> posts=new ArrayList<Post>();
-	
+	/*
 	static {
 		posts.add(new Post(1, 1, "Post1",new Date()));
 		posts.add(new Post(2, 2, "Post2",new Date()));
@@ -63,6 +63,6 @@ public class PostDaoService {
 		}
 		return null;
 	}
-	
+	*/
 
 }

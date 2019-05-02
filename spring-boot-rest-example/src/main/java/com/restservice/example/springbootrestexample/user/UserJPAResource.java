@@ -22,12 +22,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.restservice.example.springbootrestexample.user.post.Post;
+
 @RestController
 public class UserJPAResource {
 
 	// Defining all the paths here
 	private static final String USERS = "/jpa/users";
 	private static final String USER_BY_ID = USERS + "/{id}";
+	private static final String USER_POSTS=USER_BY_ID+"/posts";
 
 	@Autowired
 	private UserRepository repository;
@@ -75,6 +78,19 @@ public class UserJPAResource {
 	@RequestMapping(path = USER_BY_ID, method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void deleteUser(@PathVariable int id) {
 		repository.deleteById(id);
+	}
+	
+	@RequestMapping(path=USER_POSTS, method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public List<Post> retrieveAllPostsForUser(@PathVariable Integer id)
+	{
+		 Optional<User> user=repository.findById(id);
+		 
+		 if(!user.isPresent())
+		 {
+			 throw new UserNotFoundException("id - " + id);
+		 }
+		 
+		 return user.get().getPosts();
 	}
 
 }
