@@ -30,10 +30,12 @@ public class UserJPAResource {
 	// Defining all the paths here
 	private static final String USERS = "/jpa/users";
 	private static final String USER_BY_ID = USERS + "/{id}";
-	private static final String USER_POSTS=USER_BY_ID+"/posts";
+	private static final String USER_POSTS = USER_BY_ID + "/posts";
 
 	@Autowired
 	private UserRepository repository;
+	@Autowired
+	private PostRepository postRepository;
 
 	// retrieveAllUsers
 	@RequestMapping(path = USERS, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -79,18 +81,35 @@ public class UserJPAResource {
 	public void deleteUser(@PathVariable int id) {
 		repository.deleteById(id);
 	}
-	
-	@RequestMapping(path=USER_POSTS, method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
-	public List<Post> retrieveAllPostsForUser(@PathVariable Integer id)
-	{
-		 Optional<User> user=repository.findById(id);
-		 
-		 if(!user.isPresent())
-		 {
-			 throw new UserNotFoundException("id - " + id);
-		 }
-		 
-		 return user.get().getPosts();
+
+	@RequestMapping(path = USER_POSTS, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<Post> retrieveAllPostsForUser(@PathVariable Integer id) {
+		Optional<User> user = repository.findById(id);
+
+		if (!user.isPresent()) {
+			throw new UserNotFoundException("id - " + id);
+		}
+
+		return user.get().getPosts();
+	}
+
+	@RequestMapping(path = USER_POSTS, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Object> createPost(@PathVariable Integer id, @RequestBody Post reqPost) {
+		Optional<User> user = repository.findById(id);
+
+		if (!user.isPresent()) {
+			throw new UserNotFoundException("id - " + id);
+		}
+
+		reqPost.setUserId(user.get());
+
+		postRepository.save(reqPost);
+
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{postId}")
+				.buildAndExpand(reqPost.getId()).toUri();
+
+		return ResponseEntity.created(location).build();
+
 	}
 
 }
